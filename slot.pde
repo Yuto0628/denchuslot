@@ -1,57 +1,71 @@
-PImage img1,img2, img3,gazou[];
-// Prepare three reels for the slot.Because.To make it easier to make a complete decision
-void slot(){
-  textAlign(CENTER);
-  fill(0);
-  textSize(30);
-  int i;
+class Slot{
+  Slot(){}
   
+  int betCoins;
+  int magnification;
+  int targetCoins = 120;
   
-  img1 = loadImage("Image/batt.png");
-  img2 = loadImage("Image/robot.png");
-  img3 = loadImage("Image/denchu.png");
+  final int leftPoint = 120;
+  final int centerPoint = 220;
+  final int rightPoint = 320;
   
-  gazou = new PImage[]{null,img1,img2,img3};  
-  //BOX[0]
-  if (box[0] == 0){
-    i = (int)random(3)+1;
-    image(gazou[i], 120, 120);
-    if(keyPressed){
-      if (keyCode == LEFT){
-        box[0] = i;
-      }
+  Lane leftLane = new Lane(leftPoint);
+  Lane centerLane = new Lane(centerPoint);
+  Lane rightLane = new Lane(rightPoint);
+  
+  Player player = new Player();
+  
+  void laneControl(){
+      if(key == 'q'){
+      quit();
+    }else if (key == ' ' && leftLane.lane[0] != 0 && centerLane.lane[0] != 0 && rightLane.lane[0] != 0){
+      decision();
+      leftLane.resetLane();
+      centerLane.resetLane();
+      rightLane.resetLane();
+    } else if (key == 'a'){
+      leftLane.stopLane();
+    } else if (key == 's'){
+      centerLane.stopLane();
+    } else if (key == 'd'){
+      rightLane.stopLane();
     }
   }
-  else if (box[0] != 0){
-    image(gazou[box[0]],120,120);
+  
+  void lever(){
+      leftLane.moveLane();
+      centerLane.moveLane();
+      rightLane.moveLane();
   }
   
-  // BOX[1]
-  if (box[1] == 0){
-    i = (int)random(3)+1;
-    image(gazou[i], 120+100, 120);
-    if(keyPressed){
-      if (keyCode == DOWN){
-        box[1] = i;
-      }
+  void calcMagnification(){
+    
+  }
+  
+  void calcCoins(){
+    
+  }
+  
+  void message(){
+    
+  }
+  
+  void decision(){
+    if (player.haveCoins >= targetCoins){
+      isGameClear();
+    } else if (player.haveCoins <= 0){
+      isGameOver();
     }
-  }
-  else if (box[1] != 0){
-    image(gazou[box[1]],120+100,120);
+    player.betCoins();
   }
   
-  
-  // BOX[2]
-  if (box[2] == 0){
-    i = (int)random(3)+1;
-    image(gazou[i], 120+200, 120);
-    if(keyPressed){
-      if (keyCode == RIGHT){
-        box[2] = i;
-      }
+  void isGameClear(){
+      state = CLEAR;
     }
+  
+  
+  void isGameOver(){
+      state = FAULT;
   }
-  else if (box[2] != 0){
-    image(gazou[box[2]],120+200,120);
-  }
+  
 }
